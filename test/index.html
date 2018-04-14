@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Asset Management</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <!--<script src="./ResizeObserver.global.js"></script>-->
+</head>
+
+<body>
+    <div style="width:250px;height:250px;background-color:black;" id="aaa">dasd</div>
+
+    <script src="../dist/evx.js"></script>
+
+    <script>
+        //on("click","#aaa",e=>console.log(e));
+        evx.on(document.getElementById("aaa"), "resize", e => console.log(e));
+        setTimeout(() => {
+            console.log("off");
+            evx.off(document.getElementById("aaa"), "resize", e => console.log(e));
+        }, 5000);
+
+    </script>
+</body>
+
+</html>
