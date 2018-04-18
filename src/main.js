@@ -6,8 +6,8 @@ var events = {};
 var varevents = {};
 export var unbinds = {};
 export var setting = {
-    resizeObserverFirstRun : true,
-    cssObserveEqualChange : false
+/*    resizeObserverFirstRun : true,
+    cssObserveEqualChange : false*/
 }
 
 
@@ -41,6 +41,11 @@ export function removeEvent(name,bind) {
     }
 }
 
+export function renameEvent(name,newname) {
+    events[newname] = events[name];
+    events[name] = null;
+}
+
 /**
  * Create driver for events that start with "<prefix>:" (If add to exisitng event type it will stack)
  * @param {string} prefix prefix of event (Ex: prefix=csschange will match "csschange:..." event)
@@ -49,6 +54,11 @@ export function removeEvent(name,bind) {
 export function createVarEvent(prefix,bind) {
     if (!varevents[prefix]) varevents[prefix] = [];
     varevents[prefix].push(bind);
+}
+
+export function renameVarEvent(name,newname) {
+    varevents[newname] = varevents[name];
+    varevents[name] = null;
 }
 
 /**
@@ -78,18 +88,19 @@ function on_single(target,name,callback) {
             if (!target.unbinds) target.unbinds = {};
             if (!target.unbinds[name]) target.unbinds[name] = {};
             if (!target.unbinds[name][callback]) target.unbinds[name][callback] = [];
-            target.unbinds[name][callback].push(event(target,callback));
+            target.unbinds[name][callback].push(event(target,callback.bind(target)));
         });
     }
 }
 
-function on_single_var(target,name,callback,args) {
+function on_single_var(target,name,args,callback) {
     if (varevents[name]) {
         varevents[name].forEach((event) => {
-            if (!target.unbinds) target.unbinds = {};
-            if (!target.unbinds[name]) target.unbinds[name] = {};
-            if (!target.unbinds[name][callback]) target.unbinds[name][callback] = [];
-            target.unbinds[name][callback].push(event(target,callback,args));
+            if (!target.varunbinds) target.varunbinds = {};
+            if (!target.varunbinds[name]) target.varunbinds[name] = {};
+            if (!target.varunbinds[name][args]) target.varunbinds[name][args] = {};
+            if (!target.varunbinds[name][args][callback]) target.varunbinds[name][args][callback] = [];
+            target.varunbinds[name][args][callback].push(event(target,args,callback.bind(target)));
         });
     }
 }
@@ -111,10 +122,10 @@ export function on(target,name,callback) {
 
         if (typeof $ !== 'undefined') {
             $(target).each(function(index,ele) {
-                on_single_var(ele,firstpart,callback,part);
+                on_single_var(ele,firstpart,part,callback);
             });
         } else {
-            on_single_var(target,firstpart,callback,part);
+            on_single_var(target,firstpart,part,callback);
         }
     }
 }
@@ -146,13 +157,65 @@ function off_single(target,name,callback) {
     }
 }
 
+function off_single_var(target,name,args,callback) {
+    if (!name) {
+        if (target.varunbinds) {
+            for (var unbind_ in target.varunbinds) {
+                off_single_var(target,unbind_)
+            }
+            target.varunbinds = null;
+        }
+        return;
+    }
+    if (!args) {
+        if (target.varunbinds && target.varunbinds[name]) {
+            for (var unbind_ in target.varunbinds[name]) {
+                off_single_var(target,name,unbind_)
+            }
+            target.varunbinds[name] = null;
+        }
+        return;
+    }
+    if (!callback) {
+        if (target.varunbinds && target.varunbinds[name] && target.varunbinds[name][args]) {
+            for (var unbind_ in target.varunbinds[name][args]) {
+                off_single_var(target,name,args,unbind_)
+            }
+            target.varunbinds[name][args] = null;
+        }
+        return;
+    }
+    if (target.varunbinds && target.varunbinds[name] && target.varunbinds[name][args] && target.varunbinds[name][args][callback]) {
+        target.varunbinds[name][args][callback].forEach((unbind) => {
+            unbind();
+        });
+        target.varunbinds[name][args][callback] = null;
+    }
+}
+
 export function off(target,name,callback) {
+    var part = name.split(":");
+
     if (typeof $ !== 'undefined') {
         $(target).each(function(index,ele) {
             off_single(ele,name,callback);
         });
     } else {
         off_single(target,name,callback);
+    }
+
+    //Variable event
+    if (part.length>1) {
+        var firstpart = part[0];
+        part.shift();
+
+        if (typeof $ !== 'undefined') {
+            $(target).each(function(index,ele) {
+                off_single_var(ele,firstpart,part,callback);
+            });
+        } else {
+            off_single_var(target,firstpart,part,callback);
+        }
     }
 }
 
@@ -161,9 +224,12 @@ export default {
     createVarEvent: createVarEvent,
     removeEvent: removeEvent,
     removeVarEvent: removeVarEvent,
+    renameEvent: renameEvent,
+    renameVarEvent: renameVarEvent,
     on: on,
     off: off,
     setting: setting,
-
     unbinds: unbinds
 }
+
+require("./jquery.js");

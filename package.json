@@ -1,14 +1,14 @@
 {
   "name": "eventx-core",
-  "version": "1.0.0",
-  "description": "Core of EventX javascript framework",
+  "version": "0.1.0",
+  "description": "Core of EventX javascript event framework",
   "main": "src/main.js",
   "scripts": {
     "test": "webpack"
   },
   "repository": {
     "type": "git",
-    "url": "eventx-core"
+    "url": "https://github.com/Chomtana/EventX-core.git"
   },
   "keywords": [
     "eventx",

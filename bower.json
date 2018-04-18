@@ -1,0 +1,22 @@
+{
+  "name": "eventx-core",
+  "description": "Core of EventX javascript event framework",
+  "main": "src/main.js",
+  "authors": [
+    "Chomtana"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "eventx",
+    "event",
+    "core"
+  ],
+  "homepage": "https://github.com/Chomtana/EventX-core",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

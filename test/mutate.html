@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Asset Management</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <!--<script src="./ResizeObserver.global.js"></script>-->
+</head>
+
+<body>
+    <div style="width:250px;height:250px;background-color:black;" id="aaa">dasd</div>
+
+    <script src="../dist/evx.js"></script>
+
+    <script>
+        evx.createEvent("mutate",function(target,callback) {
+            //universal event observe everything (you shouldn't use this version)
+            var config = { attributes: true, childList: true, characterData: true, subtree: true, attributeOldValue: true, characterDataOldValue: true };
+
+            const ob = new MutationObserver(mutationsList => {
+                for (var mutation of mutationsList) {
+                    callback(mutation);
+                }
+            });
+
+            ob.observe(target,config);
+
+            return function() {
+                //ob.unobserve(target);
+                ob.disconnect();
+            }
+        });
+
+
+        evx.createEvent("attrchange",function(target,callback) {
+            var config = { attributes: true, attributeOldValue: true};
+
+            const ob = new MutationObserver(mutationsList => {
+                for (var mutation of mutationsList) {
+                    callback(mutation);
+                }
+            });
+
+            ob.observe(target,config);
+
+            return function() {
+                //ob.unobserve(target);
+                ob.disconnect();
+            }
+        });
+
+        evx.createVarEvent("attrchange",function(target,args,callback) {
+            var config = { attributes: true, attributeOldValue: true, attributeFilter: [args[0]]};
+
+            const ob = new MutationObserver(mutationsList => {
+                for (var mutation of mutationsList) {
+                    if (mutation.target == target) callback(mutation);
+                }
+            });
+
+            ob.observe(target,config);
+
+            return function() {
+                //ob.unobserve(target);
+                ob.disconnect();
+            }
+        });
+
+        //on("click","#aaa",e=>console.log(e));
+        evx.on(document.getElementById("aaa"), "attrchange:xxx", e => console.log(e));
+        /*setTimeout(() => {
+            console.log("off");
+            evx.off(document.getElementById("aaa"), "attrchange", e => console.log(e));
+        }, 5000);*/
+
+    </script>
+</body>
+
+</html>
