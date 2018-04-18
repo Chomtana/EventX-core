@@ -53,3 +53,34 @@ evx.createVarEvent("<event prefix>",function(target,args,callback) {
 ```
 
 ### Example
+
+# Bind event
+
+* In callback function this variable will be element that fire event.
+* For example, if element #aaa has been resized, callback function will be called with this = HTMLElement object of #aaa and arguments up to what you have done in create event step.
+* **Warning :** If you use arrow function, this will equal to Window object instead of target HTMLElement object.
+
+## JQuery
+### Syntax
+```javascript
+$("<selector>").on("<event name>",function(e,...) {
+  ...
+});
+
+$("<selector>").on("<event name>","<selector>",function(e,...) {
+  ...
+});
+```
+And other syntax that you can find in http://api.jquery.com/on/
+
+### Example
+
+## Native
+### Syntax
+```javascript
+evx.on(target element in HTMLElement or JQuery object,"<event name>",function(e,...) {
+  ...
+})
+```
+
+### Example
