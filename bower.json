@@ -1,7 +1,7 @@
 {
   "name": "eventx-core",
   "description": "Core of EventX javascript event framework",
-  "main": "src/main.js",
+  "main": "dist/eventx-core.js",
   "authors": [
     "Chomtana"
   ],

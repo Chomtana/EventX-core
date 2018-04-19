@@ -6,7 +6,7 @@ module.exports = {
   entry: './src/main.js',
   mode: 'development',
   output: {
-    filename: 'evx.js',
+    filename: 'eventx-core.js',
     path: path.resolve(__dirname, 'dist'),
     libraryTarget: 'window',
     library: 'evx'
