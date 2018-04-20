@@ -1,4 +1,7 @@
 # EventX-core
+
+![Travis](https://img.shields.io/travis/Chomtana/EventX-core.svg)
+
 Core of EventX javascript event framework
 
 # Install
@@ -16,8 +19,8 @@ npm install eventx-core
 ## Normal event
 ### Syntax
 ```javascript
-evx.createElement("<event name>",function(target,callback) {
-  //target is element that you need to bind event to
+evx.createEvent("<event name>",function(target,callback) {
+  //target is a single HTMLElement object that you need to bind event to (Always single HTMLElement)
   //callback is a function that you must call when event fire
   
   (bind event here)
@@ -29,6 +32,7 @@ evx.createElement("<event name>",function(target,callback) {
 ```
 
 ### Example
+[Resize event (evx.createEvent step)](https://jsfiddle.net/Chomtana/306mjxLs/)
 
 ## Variable event
 
@@ -40,7 +44,7 @@ evx.createElement("<event name>",function(target,callback) {
 ### Syntax
 ```javascript
 evx.createVarEvent("<event prefix>",function(target,args,callback) {
-  //target is element that you need to bind event to
+  //target is a single HTMLElement object that you need to bind event to (Always single HTMLElement)
   //args is an array of variable after <prefix>, for example <prefix>:src -> args = ["src"], <prefix>:src:alt -> args = ["src","alt"]
   //callback is a function that you must call when event fire
   
