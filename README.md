@@ -32,7 +32,7 @@ evx.createEvent("<event name>",function(target,callback) {
 ```
 
 ### Example
-[Resize event (evx.createEvent step)](https://jsfiddle.net/Chomtana/306mjxLs/)
+[Resize event (evx.createEvent step line 7)](https://jsfiddle.net/Chomtana/306mjxLs/)
 
 ## Variable event
 
@@ -78,6 +78,7 @@ $("<selector>").on("<event name>","<selector>",function(e,...) {
 And other syntax that you can find in http://api.jquery.com/on/
 
 ### Example
+[Resize event (function jqueryon line 34)](https://jsfiddle.net/Chomtana/306mjxLs/)
 
 ## Native
 ### Syntax
@@ -88,3 +89,4 @@ evx.on(target element in HTMLElement or JQuery object,"<event name>",function(e,
 ```
 
 ### Example
+[Resize event (function nojqueryon line 61)](https://jsfiddle.net/Chomtana/306mjxLs/)
