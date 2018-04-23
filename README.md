@@ -1,6 +1,7 @@
 # EventX-core
 
 ![Travis](https://img.shields.io/travis/Chomtana/EventX-core.svg)
+[![Coverage Status](https://coveralls.io/repos/github/Chomtana/EventX-core/badge.svg?branch=master)](https://coveralls.io/github/Chomtana/EventX-core?branch=master)
 
 Core of EventX javascript event framework
 
